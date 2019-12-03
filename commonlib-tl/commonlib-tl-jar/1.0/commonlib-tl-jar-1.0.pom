@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>commonlib-tl</groupId>
+	<artifactId>commonlib-tl-jar</artifactId>
+	<version>1.0</version>
+
+	<!-- Output to jar format -->
+	<packaging>jar</packaging>
+
+	<properties>
+		<jdk.version>1.8</jdk.version>
+		<log4j.version>1.2.17</log4j.version>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>internal</id>
+			<url>file://${project.build.directory}/mvn-repo</url>
+		</repository>
+	</distributionManagement>
+
+
+
+	<build>
+
+		<directory>deploy</directory>
+		<sourceDirectory>src</sourceDirectory>
+		<outputDirectory>bin</outputDirectory>
+		<finalName>${project.groupId}-${project.artifactId}-${project.version}</finalName>
+		<resources>
+			<resource>
+				<directory>conf</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<compilerArgs>
+						<arg>-XDignore.symbol.file</arg>
+					</compilerArgs>
+					<fork>true</fork>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<!-- <sourceDirectory>src</sourceDirectory> -->
+
+			<!-- download source code in Eclipse, best practice -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-compiler-plugin</artifactId> 
+				<version>3.6.1</version> <configuration> <source>1.8</source> <target>1.8</target> 
+				<compilerArgs> <arg>-XDignore.symbol.file</arg> </compilerArgs> <fork>true</fork> 
+				</configuration> </plugin> <plugin> <groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-shade-plugin</artifactId> <version>3.0.0</version> <configuration> 
+				<createDependencyReducedPom>false</createDependencyReducedPom> <shadedArtifactAttached>true</shadedArtifactAttached> 
+				<shadedArtifactId>${project.groupId}-${project.artifactId}</shadedArtifactId> 
+				<shadedClassifierName>all</shadedClassifierName> <filters> <filter> <artifact>*:*</artifact> 
+				<excludes> <exclude>META-INF/*.SF</exclude> <exclude>META-INF/*.DSA</exclude> 
+				<exclude>META-INF/*.RSA</exclude> </excludes> </filter> </filters> </configuration> 
+				<executions> <execution> <phase>package</phase> <goals> <goal>shade</goal> 
+				</goals> </execution> </executions> </plugin> -->
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>false</downloadJavadocs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4.1</version>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+					</archive>
+					<resources>
+						<resource>
+							<directory>${basedir}/src/main/resources</directory>
+							<filtering>false</filtering>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/br.eti.kinoshita/testlink-java-api -->
+		<!-- https://mvnrepository.com/artifact/org.jvnet.hudson.plugins/testlink -->
+
+		<dependency>
+			<groupId>testlink</groupId>
+			<artifactId>automation</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.ws.commons.util/ws-commons-util -->
+		<dependency>
+			<groupId>org.apache.ws.commons.util</groupId>
+			<artifactId>ws-commons-util</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.xmlrpc</groupId>
+			<artifactId>xmlrpc-client</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.xmlrpc</groupId>
+			<artifactId>xmlrpc-common</artifactId>
+			<version>3.1</version>
+		</dependency>
+
+
+		<!-- <dependency> <groupId>TestLinkSample</groupId> <artifactId>TestLinkSample</artifactId> 
+			<version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/ExternalJar/ws-commons-util-1.0.2.jar</systemPath> 
+			</dependency> -->
+
+
+		<!-- https://mvnrepository.com/artifact/br.eti.kinoshita/testlink-java-api -->
+		<!-- <dependency> <groupId>br.eti.kinoshita</groupId> <artifactId>testlink-java-api</artifactId> 
+			<version>1.9.19-0</version> </dependency> -->
+
+
+		<!-- <dependency> <groupId>xmlrpc</groupId> <artifactId>xmlrpc</artifactId> 
+			<version>3.0</version> <type>pom</type> </dependency> -->
+
+
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+
+
+
+		<!-- <dependency> <groupId>TestLinksampletwo</groupId> <artifactId>TestLinksampletwo</artifactId> 
+			<version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/ExternalJar/xmlrpc-client-3.1.jar</systemPath> 
+			</dependency> <dependency> <groupId>TestLinksamplethree</groupId> <artifactId>TestLinksamplethree</artifactId> 
+			<version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/ExternalJar/xmlrpc-common-3.1.jar</systemPath> 
+			</dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/org.apache.xmlrpc/xmlrpc-client -->
+
+
+
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.hk2</groupId>
+			<artifactId>guice-bridge</artifactId>
+			<version>2.4.0-b31</version>
+		</dependency>
+
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-core</artifactId>
+			<version>1.1.8</version>
+		</dependency>
+	</dependencies>
+
+
+</project>
